@@ -4,7 +4,7 @@
   "description": "An example utilizing the minimal proxy design pattern",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx hardhat clean && npx hardhat test"
   },
   "keywords": [
     "minimal",
