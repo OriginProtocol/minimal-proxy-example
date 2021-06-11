@@ -5,16 +5,23 @@ const salts = [formatBytes32String('1'), formatBytes32String('2')]
 
 let pairMaster
 let pairFactory
+let pairStandaloneGas
+let pairProxyGas
 
 const DAI_ADDRESS = getAddress('0x6b175474e89094c44da98b954eedeac495271d0f');
 const WETH_ADDRESS = getAddress('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2');
 const OGN_ADDRESS = getAddress('0x8207c1ffc5b6804f6024322ccf34f29c3541ae26');
 
+const getGas = async (tx) => {
+  const receipt = await ethers.provider.getTransactionReceipt(tx.hash)
+  return receipt.gasUsed.toString()
+}
 
 describe("Minimal Proxy | EIP-1167", function () {
 
   it("Should deploy master Pair contract", async function () {
     pairMaster = await (await ethers.getContractFactory("Pair")).deploy();
+    pairStandaloneGas = await getGas(pairMaster.deployTransaction)
     expect(pairMaster.address).to.exist;
   });
 
@@ -33,6 +40,7 @@ describe("Minimal Proxy | EIP-1167", function () {
 
     const tx = await pairFactory.createPair(salts[0]);
     await tx.wait()
+    pairProxyGas = await getGas(tx)
 
     const pair1 = new ethers.Contract(
       pairAddress,
@@ -58,4 +66,9 @@ describe("Minimal Proxy | EIP-1167", function () {
     expect(tokens[1]).to.equal(OGN_ADDRESS)
 
   });
+
+  it("Minimal Proxy deployment should cost 10x less than a standard deployment", async function () {
+    expect(Number(pairStandaloneGas)).to.be.greaterThan(Number(pairProxyGas)*10)
+  });
+
 });
