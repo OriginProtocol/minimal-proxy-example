@@ -69,6 +69,7 @@ describe("Minimal Proxy | EIP-1167", function () {
 
   it("Minimal Proxy deployment should cost 10x less than a standard deployment", async function () {
     expect(Number(pairStandaloneGas)).to.be.greaterThan(Number(pairProxyGas)*10)
+    expect(Number(pairStandaloneGas)).to.be.equal(Number(pairProxyGas))
   });
 
 });

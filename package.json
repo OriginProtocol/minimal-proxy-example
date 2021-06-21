@@ -4,7 +4,7 @@
   "description": "An example utilizing the minimal proxy design pattern",
   "main": "index.js",
   "scripts": {
-    "test": "npx hardhat clean && npx hardhat test",
+    "test": "npx hardhat clean && npx hardhat test && yarn run snyk:check",
     "snyk:check": "npx snyk test"
   },
   "keywords": [
