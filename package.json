@@ -26,6 +26,6 @@
     "hardhat": "^2.3.0"
   },
   "dependencies": {
-    "snyk": "^1.630.0"
+    "snyk": "^1.631.0"
   }
 }
